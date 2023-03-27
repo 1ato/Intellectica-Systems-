@@ -1,0 +1,83 @@
+echo "# Intellectica-Systems-" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/1ato/Intellectica-Systems-.git
+git push -u origin main
+
+class Minesweeper:
+    def __init__(self, width=8, height=8, num_mines=8):
+        self.width = width
+        self.height = height
+        self.num_mines = num_mines
+        self.board = self.create_board()
+        self.assign_mines_to_board()
+
+    def create_board(self):
+        board = [[0 for _ in range(self.width)] for _ in range(self.height)]
+        return board
+
+    def assign_mines_to_board(self):
+        locations = random.sample(range(self.width * self.height), self.num_mines)
+        for location in locations:
+            row = location // self.width
+            col = location % self.width
+            self.board[row][col] = "M"
+
+    def get_num_adjacent_mines(self, row, col):
+        num_adjacent_mines = 0
+        for i in range(max(0, row-1), min(row+2, self.height)):
+            for j in range(max(0, col-1), min(col+2, self.width)):
+                if self.board[i][j] == "M":
+                    num_adjacent_mines += 1
+        return num_adjacent_mines
+
+    def get_emoji(self, value):
+        if value == "M":
+            return "💣"
+        elif value == "F":
+            return "🚩"
+        elif value == " ":
+            return "◻️"
+        else:
+            return f"{value}️️️️️️️️"
+
+    def get_display_board(self, show_all=False):
+        display_board = [[self.get_emoji(self.board[row][col]) if show_all or self.board[row][col] != " " else "◻️" for col in range(self.width)] for row in range(self.height)]
+        return display_board
+
+    def check_square(self, row, col):
+        if self.board[row][col] == "M":
+            return False
+        elif self.board[row][col] == 0:
+            self.clear_squares(row, col)
+        else:
+            self.board[row][col] = self.get_num_adjacent_mines(row, col)
+        return True
+
+    def clear_squares(self, row, col):
+        if self.board[row][col] != 0:
+            return
+        self.board[row][col] = self.get_num_adjacent_mines(row, col)
+        for i in range(max(0, row-1), min(row+2, self.height)):
+            for j in range(max(0, col-1), min(col+2, self.width)):
+                if self.board[i][j] == 0:
+                    self.clear_squares(i, j)
+                else:
+                    self.board[i][j] = self.get_num_adjacent_mines(i, j)
+
+    def flag_square(self, row, col):
+        if self.board[row][col] == " ":
+            self.board[row][col] = "F"
+        elif self.board[row][col] == "F":
+            self.board[row][col] = " "
+        return
+
+    def play_game(self):
+        while True:
+            display_board = self.get_display_board()
+            for row in display_board:
+                print(" ".join(row))
+            user_input = input("Choose a square (row, col) or flag a square (f row col): ").split()
+            if len(user_input) == 3
