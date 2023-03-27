@@ -257,4 +257,28 @@ def train(shape_x, problem, n_batch, n_train, n_reporting, save_model, est_margl
         
         if epoch <= 10 or epoch%n_reporting == 0:
             report(epoch, time.time()-t0, cost=np.mean(result))
+            
+            def bubbleSort(arr):
+    n = len(arr)
+    for i in range(n-1):
+        for j in range(n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+
+def main():
+    n = int(input("Введите количество чисел: "))
+    arr = []
+    for i in range(n):
+        x = int(input(f"Введите число {i+1}: "))
+        arr.append(x)
+
+    bubbleSort(arr)
+
+    print("Отсортированный список:")
+    for i in range(n):
+        print(arr[i])
+
+if __name__ == "__main__":
+    main()
+
     
